@@ -71,10 +71,13 @@ if(isPasswordMatch){
     }
   ) 
   // console.log(token);
-  res.cookie("token", token,{
-    httpOnly:true, // 🔒 Makes the cookie inaccessible to JavaScript running in the browser 
-    expires: new Date(Date.now()+2*60*60*1000)// // 2 hours from now   2 hours in milliseconds
-  });
+ res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,           // ✅ required on HTTPS (production)
+  sameSite: "None",       // ✅ allow cross-origin cookies
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+});
+ console.log("Cookies:", req.cookies);
   res.send(user);
 }
 else{
