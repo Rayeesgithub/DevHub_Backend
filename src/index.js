@@ -6,7 +6,7 @@ const app=express();
 
 const cors=require("cors");
 app.use(cors({
-   origin: ["https://dev-hub-bay-ten.vercel.app/"],
+   origin: ["https://devhubbler.netlify.app/"],
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], // ✅ include PATCH here
 }));
