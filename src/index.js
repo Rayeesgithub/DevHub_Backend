@@ -6,7 +6,7 @@ const app=express();
 
 const cors=require("cors");
 app.use(cors({
-   origin: ["https://devfgh.netlify.app"],
+   origin: ["https://devconecttion.netlify.app"],
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], // ✅ include PATCH here
 }));
