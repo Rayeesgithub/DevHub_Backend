@@ -6,7 +6,7 @@ const app=express();
 
 const cors=require("cors");
 app.use(cors({
-   origin: ["https://dev-hub-rayees-alams-projects.vercel.app/"],
+   origin: ["https://dev-hub-henna.vercel.app/"],
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], // ✅ include PATCH here
 }));
