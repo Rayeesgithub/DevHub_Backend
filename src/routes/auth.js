@@ -45,10 +45,13 @@ authRouter.post("/signup", upload.single("profileImage"), async (req, res) => {
       expiresIn: "2d",
     });
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      expires: new Date(Date.now() + 2 * 60 * 60 * 1000), // 2 hours
-    });
+  res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,        // required for HTTPS
+  sameSite: "None",    // required for cross-site cookies
+  expires: new Date(Date.now() + 2 * 60 * 60 * 1000) // 2 hours
+});
+
 
     res.send({
       message: "Signup successful",
@@ -82,10 +85,13 @@ if(isPasswordMatch){
     }
   ) 
   // console.log(token);
-  res.cookie("token", token,{
-    httpOnly:true, // 🔒 Makes the cookie inaccessible to JavaScript running in the browser 
-    expires: new Date(Date.now()+2*60*60*1000)// // 2 hours from now   2 hours in milliseconds
-  });
+ res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,        // required for HTTPS
+  sameSite: "None",    // required for cross-site cookies
+  expires: new Date(Date.now() + 2 * 60 * 60 * 1000) // 2 hours
+});
+
   res.send(user);
 }
 else{
