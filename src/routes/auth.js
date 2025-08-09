@@ -104,14 +104,21 @@ catch(err){
 }
 })
 
-authRouter.post("/logout",async(req,res)=>{
-  res.cookie("token",null,{
-    expires: new Date(Date.now()),
-  }) 
-  
-  res.send("user Logout Sucessfully");
-})
-
+authRouter.post("/logout", async (req, res) => {
+  try {
+    // Clear the cookie with the SAME attributes used when setting it
+    res.cookie("token", "", {
+      httpOnly: true,
+      secure: true,        // Same as login
+      sameSite: "None",    // Same as login
+      expires: new Date(0) // Set to past date to clear immediately
+    });
+    
+    res.send("User Logout Successfully");
+  } catch (err) {
+    res.status(400).send("Error: " + err.message);
+  }
+});
 
 
 module.exports=authRouter;
