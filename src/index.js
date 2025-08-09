@@ -4,12 +4,16 @@ const cookieParser = require("cookie-parser");
 
 const app=express();
 
-const cors=require("cors");
 app.use(cors({
-   origin: ["https://dev-hub-henna.vercel.app"],
+  origin: [
+    "https://dev-hub-henna.vercel.app", // production
+    "https://dev-hub-rayees-alams-projects.vercel.app", // preview
+    "https://dev-hub-git-main-rayees-alams.vercel.app"  // preview
+  ],
   credentials: true,
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], // ✅ include PATCH here
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"]
 }));
+
 app.use(express.json());
 app.use(cookieParser())
 app.use('/uploads', express.static('uploads'));
