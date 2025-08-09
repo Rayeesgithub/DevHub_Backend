@@ -23,11 +23,9 @@ authRouter.post("/signup", upload.single("profileImage"), async (req, res) => {
       about,
     } = req.body;
 
-    console.log("Request body:", req.body);
-    console.log("File:", req.file); // multer stores file here
-
-    // encrypt password
+    // Encrypt password
     const hashPassword = await bcrypt.hash(password, 10);
+
     const user = new User({
       firstName,
       lastName,
@@ -37,17 +35,30 @@ authRouter.post("/signup", upload.single("profileImage"), async (req, res) => {
       gender,
       skills,
       about,
-      profileImage: req.file?.filename || null, // or save req.file.path if needed
+      profileImage: req.file?.filename || null,
     });
 
     await user.save();
-    res.send({ message: "Signup successful", data: user });
+
+    // Create token like in login
+    const token = jwt.sign({ _id: user._id }, "Rayees@3457", {
+      expiresIn: "2d",
+    });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      expires: new Date(Date.now() + 2 * 60 * 60 * 1000), // 2 hours
+    });
+
+    res.send({
+      message: "Signup successful",
+      data: user,
+    });
   } catch (err) {
     console.error(err);
     res.status(400).send({ message: err.message });
   }
 });
-
 
 authRouter.post("/login",async(req,res)=>{
 try{
@@ -71,13 +82,10 @@ if(isPasswordMatch){
     }
   ) 
   // console.log(token);
- res.cookie("token", token, {
-  httpOnly: true,
-  secure: true,           // ✅ required on HTTPS (production)
-  sameSite: "None",       // ✅ allow cross-origin cookies
-  maxAge: 7 * 24 * 60 * 60 * 1000,
-});
- console.log("Cookies:", req.cookies);
+  res.cookie("token", token,{
+    httpOnly:true, // 🔒 Makes the cookie inaccessible to JavaScript running in the browser 
+    expires: new Date(Date.now()+2*60*60*1000)// // 2 hours from now   2 hours in milliseconds
+  });
   res.send(user);
 }
 else{
